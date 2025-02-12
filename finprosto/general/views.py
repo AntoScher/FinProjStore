@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 
 
-def home(request):
+def index(request):
     return HttpResponse("<h1>Это home страница моего итогового проекта на Django </h1>")
 
 
