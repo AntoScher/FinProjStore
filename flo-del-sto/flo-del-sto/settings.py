@@ -92,8 +92,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'  # English
-# LANGUAGE_CODE = 'ru'  # Русский язык
+#LANGUAGE_CODE = 'en-us'  # English
+LANGUAGE_CODE = 'ru'  # Русский язык
 
 TIME_ZONE = 'Europe/Minsk'  # Часовой пояс для Минска
 
