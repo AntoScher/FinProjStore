@@ -1,0 +1,24 @@
+body {
+    background-color: #f8f9fa; /* Светлый фон */
+}
+.navbar {
+    background-color: #343a40; /* Темный фон для навигации */
+}
+.navbar-brand, .navbar-nav .nav-link {
+    color: #ffffff !important; /* Белый текст */
+}
+.navbar-nav .nav-link:hover {
+    color: #ffd700 !important; /* Золотистый цвет при наведении */
+}
+main {
+    background-color: #ffffff; /* Белый фон для основного контента */
+    border-radius: 8px; /* Закругленные углы */
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень */
+}
+footer {
+    background-color: #343a40; /* Темный фон для футера */
+    color: #ffffff; /* Белый текст */
+    padding: 10px 0;
+    text-align: center;
+}

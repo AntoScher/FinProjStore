@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+
+
+{% extends 'base.html' %}
+
+{% block title %}
     <title>Sait's Home</title>
-</head>
-<body>
-<h1>Это home страница моего итогового проекта на Django </h1>
-</body>
-</html>
+{% endblock %}
+
+{% block content%}
+
+    <h1>Это home страница моего итогового проекта на Django </h1>
+    <h3>Добро пожаловать на главную страницу сайта {{caption1}}</h3>
+
+
+{% endblock %}
