@@ -1,8 +1,16 @@
-<nav>
-    <ul>
-    <li><a href="/">Главная</a></li>
-    <li><a href="/contact">Контакты</a></li>
-    <li><a href="/data/">Страница данных</a></li>
-    <li><a href="/test/">Добавление данных</a></li>
-    </ul>
+<!-- nav.html -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">FlowerShop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
+                <li class="nav-item"><a class="nav-link" href="/flowers/">Каталог</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cart/">Корзина ({{ request.session.cart|length|default:0 }})</a></li>
+            </ul>
+        </div>
+    </div>
 </nav>

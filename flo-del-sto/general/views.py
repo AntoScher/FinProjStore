@@ -5,7 +5,11 @@ import re
 #from .models import Flower
 
 def index(request):
-    return render(request, 'general/index.html')
+    # Добавляем переменную caption1 в контекст
+    context = {
+        'caption1': 'FlowerShop'  # Значение переменной
+    }
+    return render(request, 'general/index.html', context)
 
 def flower(request,flower_id=None):
  #   №def flower(request,flower_id=None):
