@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>flower's catalog</title>
-</head>
-<body>
-<h1>Это страница каталога цветов</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
+<h1>Ассортимент цветов</h1>
+
+<div class="flower-grid">
+    {% for flower in flowers %}
+    <div class="flower-card">
+        <img src="{{ flower.image.url }}" alt="{{ flower.title }}" class="flower-image">
+        <h2 class="flower-title">{{ flower.title }}</h2>
+        <p class="flower-price">{{ flower.price }} руб.</p>
+        <a href="{% url 'flower_slug' flower.slug %}" class="btn btn-buy">Подробнее</a>
+    </div>
+    {% empty %}
+    <p>Нет доступных цветов.</p>
+    {% endfor %}
+</div>
+{% endblock %}
