@@ -8,7 +8,7 @@
 <div class="flower-grid">
     {% for flower in flowers %}
     <div class="flower-card">
-        <img src="{{ flower.image.url }}" alt="{{ flower.title }}" class="flower-image">
+        <img src="{% static 'general/image/{ flower.image.url }}" alt="{{ flower.title }}" class="flower-image">
         <h2 class="flower-title">{{ flower.title }}</h2>
         <p class="flower-price">{{ flower.price }} руб.</p>
         <a href="{% url 'flower_slug' flower.slug %}" class="btn btn-buy">Подробнее</a>

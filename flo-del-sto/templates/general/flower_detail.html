@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>{{ flower.title }}</h1>
-<img src="{{ flower.image.url }}" alt="{{ flower.title }}" class="flower-image">
+<img src="{% static 'general/image/{ flower.image.url }}" alt="{{ flower.title }}" class="flower-image">
 <p>{{ flower.description }}</p>
 <p class="flower-price">{{ flower.price }} руб.</p>
 <a href="{% url 'flower_home' %}" class="btn btn-buy">Вернуться в каталог</a>
