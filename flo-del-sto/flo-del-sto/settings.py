@@ -81,6 +81,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# flo-del-sto/settings.py
+AUTH_USER_MODEL = 'auth.User'
+LOGIN_REDIRECT_URL = 'cabinet'
+LOGOUT_REDIRECT_URL = 'user_aut'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/topics/i18n/
 LANGUAGE_CODE = 'ru'  # Русский язык
