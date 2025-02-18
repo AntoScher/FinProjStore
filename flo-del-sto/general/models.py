@@ -4,7 +4,7 @@ class Flower(models.Model):
     title = models.CharField(max_length=255, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена")
-    image = models.CharField(max_length=255, verbose_name="Изображение")
+    image = models.ImageField(upload_to='static/general/image',  verbose_name="Изображение")
     slug = models.SlugField(unique=True, verbose_name="Категория")
 
     def __str__(self):
