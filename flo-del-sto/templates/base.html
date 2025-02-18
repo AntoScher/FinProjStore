@@ -1,4 +1,4 @@
-<D:\DEV\FinProjStore\flo-del-sto\static\general\css\style.css!DOCTYPE html>
+<!DOCTYPE html>
 {% load static %}
 <html lang="en">
 
@@ -17,7 +17,9 @@
     <h1>Это базовая страница шаблонов</h1>
 
     <aside class="d-flex justify-content-center my-3">
-        <img src="{% static 'general/image/logo-eagle.jpg' %}" class="img-fluid" alt="Logo" width="150">
+     <!-- <img src="{% static 'general/image/logo-eagle.jpg' %}" class="img-fluid" alt="Logo" width="150">-->
+        <img src="{% static 'general/image/' %}{{ flower.image }}" alt="{{ flower.title }}" class="flower-image">
+
     </aside>
 
     <main class="container my-5">
