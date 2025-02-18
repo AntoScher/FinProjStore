@@ -29,10 +29,6 @@ def flower_slug(request,flower_slug):
    flower = get_object_or_404(Flower, slug=flower_slug)
    return render(request, 'general/flower_detail.html', {'flower': flower})
 
-
-
-
-
 def page_not_found(request, exception):
     return HttpResponseNotFound("<h1>Страница не найдена</h1>")
 
