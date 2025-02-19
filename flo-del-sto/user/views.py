@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseNotFound
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
-from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.models import User
 
@@ -63,7 +62,7 @@ def page_not_found(request, exception):
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
 
-        if user is not None and default_token_generator.check_token(user, token):
+"""       if user is not None and default_token_generator.check_token(user, token):
             if request.method == 'POST':
                 form = PasswordResetConfirmForm(user=user, data=request.POST)
                 if form.is_valid():
@@ -74,20 +73,9 @@ def page_not_found(request, exception):
             return render(request, 'user/password_reset_confirm.html', {'form': form})
         else:
             return render(request, 'user/password_reset_confirm_invalid.html')
+"""
 
-    def cabinet(request):
-        return render(request, 'user/cabinet.html')
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('cabinet')
-        else:
-            context['error'] = 'Неверные данные'
-            return render(request, 'user/user_aut.html', context)
-    return render(request, 'user/user_aut.html', context)
+
 
 def register(request):
     # Код для регистрации

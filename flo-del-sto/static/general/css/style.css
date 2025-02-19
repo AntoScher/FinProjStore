@@ -2,6 +2,8 @@
 .navbar {
     border-bottom: 2px solid #ffc107; /* Полоса под навигацией */
 }
+.navbar-item {
+    margin-left: 20px;
 
 /* Футер */
 .footer {
