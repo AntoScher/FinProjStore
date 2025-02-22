@@ -90,7 +90,8 @@ LOGOUT_REDIRECT_URL = 'home'
 # Internationalization
 # https://docs.djangoproject.com/en/topics/i18n/
 LANGUAGE_CODE = 'ru'  # Русский язык
-TIME_ZONE = 'Europe/Minsk'  # Часовой пояс для Минска
+#TIME_ZONE = 'Europe/Minsk'  # Часовой пояс для Минска
+TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 

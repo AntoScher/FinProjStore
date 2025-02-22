@@ -16,10 +16,5 @@ class User(AbstractUser):
         blank=True,
     )
 
-
-
-
-
-
 """
 """
