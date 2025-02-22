@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'general.apps.GeneralConfig',  # Регистрация приложения 'general'
-    'user.apps.UserConfig',       # Регистрация приложения 'user'
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
