@@ -83,8 +83,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # flo-del-sto/settings.py
 AUTH_USER_MODEL = 'auth.User'
-LOGIN_REDIRECT_URL = 'cabinet'
-LOGOUT_REDIRECT_URL = 'user_aut'
+LOGIN_REDIRECT_URL = 'flower_home'
+LOGOUT_REDIRECT_URL = 'home'
 
 
 # Internationalization
@@ -102,3 +102,22 @@ STATICFILES_DIRS = [BASE_DIR / 'static/']  # Путь к статическим 
 # Default primary key field type
 # https://docs.djangoproject.com/en/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'users.authentication.EmailAuthBackend',
+]
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "djangocourse@yandex.ru"
+EMAIL_HOST_PASSWORD = "bnufhkwcripaunvu"
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
+
+AUTH_USER_MODEL = 'users.User'
