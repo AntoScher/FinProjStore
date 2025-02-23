@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'general.apps.GeneralConfig',  # Регистрация приложения 'general'
     'users.apps.UsersConfig',
+    'box.apps.BoxConfig',
 ]
 
 MIDDLEWARE = [
