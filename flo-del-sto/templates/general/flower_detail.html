@@ -6,6 +6,7 @@
 <img src="{{ flower.image.url }}" alt="{{ flower.title }}" class="flower-image">
 <p>{{ flower.description }}</p>
 <p class="flower-price">{{ flower.price }} руб.</p>
+<a href="{% url 'add_to_cart' flower.id %}" class="btn">В корзину</a>
 <a href="{% url 'flower_home' %}" class="btn btn-buy">Вернуться в каталог</a>
 {% endblock %}
 

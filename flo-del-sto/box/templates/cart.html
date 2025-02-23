@@ -1,22 +1,20 @@
 {% extends 'base.html' %}
-
 {% load static %}
-
-{% block title %}Корзина - Магазин машин{% endblock %}
+{% block title %}Корзина - Цветочного магазина{% endblock %}
 
 {% block content %}
     <h2>Ваша корзина</h2>
     {% if cart_items %}
         <div class="cart-items">
-            {% for car in cart_items %}
+            {% for flower in cart_items %}
                 <div class="cart-item">
-                    {% if car.image %}
-                        <img src="{{ car.image.url }}" alt="{{ car.name }}">
+                    {% if flower.image %}
+                        <img src="{{ car.image.url }}" alt="{{ flower.title }}">
                     {% else %}
-                        <img src="{% static 'img/car_placeholder.png' %}" alt="Без изображения">
+                        <img src="{% static 'general/img/no-image.jpg' %}" alt="Без изображения">
                     {% endif %}
-                    <h3>{{ car.name }}</h3>
-                    <p class="price">{{ car.price }} руб.</p>
+                    <h3>{{ flower.title }}</h3>
+                    <p class="price">{{flower.price}} руб.</p>
                     <a href="{% url 'remove_from_cart' car.id %}" class="btn">Удалить</a>
                 </div>
             {% endfor %}
