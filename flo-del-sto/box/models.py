@@ -38,14 +38,16 @@ def notify_bot_about_status_change(sender, instance, **kwargs):
     # Проверяем, изменился ли статус
     if instance._status_before_update != instance.status:
         data = {
-            'telegram_id': 1367180406,  # ID пользователя из Telegram
+            #'telegram_id':6712048539
+            'telegram_id': 6712048539,  # ID пользователя из Telegram
             'order_id': instance.id,
             'new_status': instance.status,
             'total_price': float(instance.total_price),
         }
+        print(f"Отправка данных в бот: {data}")  # Логируем данные
         try:
             # Отправка POST-запроса к вашему боту
-            response = requests.post('http://127.0.0.1:8080/notify/', json=data)
+            response = requests.post('http://127.0.0.1:8081/notify/', json=data)
             response.raise_for_status()
         except requests.RequestException as e:
             # Логируем ошибки

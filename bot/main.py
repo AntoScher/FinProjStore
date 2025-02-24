@@ -7,13 +7,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 API_TOKEN = os.environ.get("TELEGRAM_API_TOKEN")
-
+#print(API_TOKEN)
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
 
 async def notify(request):
     try:
         data = await request.json()
+        logging.info(f"Получены данные: {data}")  # Логируем данные запроса
         telegram_id = data.get('telegram_id')
         order_id = data.get('order_id')
         new_status = data.get('new_status')
@@ -34,3 +35,9 @@ app.router.add_post('/notify/', notify)
 
 if __name__ == '__main__':
     web.run_app(app, host='127.0.0.1', port=8081)  # Используем порт 8081
+"""
+    async def on_startup(app):
+        await bot.send_message(chat_id=6712048539, text="Бот запущен и готов к работе!")
+
+    app.on_startup.append(on_startup)
+    web.run_app(app, host='127.0.0.1', port=8081)"""
