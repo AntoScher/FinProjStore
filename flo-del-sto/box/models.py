@@ -39,7 +39,7 @@ def notify_bot_about_status_change(sender, instance, **kwargs):
     if instance._status_before_update != instance.status:
         data = {
             #'telegram_id':6712048539
-            'telegram_id': 6712048539,  # ID пользователя из Telegram
+            'telegram_id': 1507961620,  # ID пользователя из Telegram
             'order_id': instance.id,
             'new_status': instance.status,
             'total_price': float(instance.total_price),
