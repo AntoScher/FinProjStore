@@ -23,7 +23,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('general.urls')),
-    path('user/', include('user.urls'),)
+    path('users/', include('users.urls')),
+    path('box/', include('box.urls')),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = page_not_found

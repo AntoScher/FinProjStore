@@ -1,4 +1,9 @@
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+# Загрузка переменных окружения из файла .env
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -7,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-l!1^2erm(r5=c17%z(r4+6g0i$&$@4(!#+70$or_u6rc*aiswh'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -23,7 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'general.apps.GeneralConfig',  # Регистрация приложения 'general'
-    'user.apps.UserConfig',       # Регистрация приложения 'user'
+    'users.apps.UsersConfig',
+    'box.apps.BoxConfig',
 ]
 
 MIDDLEWARE = [
@@ -83,14 +89,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # flo-del-sto/settings.py
 AUTH_USER_MODEL = 'auth.User'
-LOGIN_REDIRECT_URL = 'cabinet'
-LOGOUT_REDIRECT_URL = 'user_aut'
+LOGIN_REDIRECT_URL = 'flower_home'
+LOGOUT_REDIRECT_URL = 'home'
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/topics/i18n/
 LANGUAGE_CODE = 'ru'  # Русский язык
-TIME_ZONE = 'Europe/Minsk'  # Часовой пояс для Минска
+#TIME_ZONE = 'Europe/Minsk'  # Часовой пояс для Минска
+TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
@@ -102,3 +109,22 @@ STATICFILES_DIRS = [BASE_DIR / 'static/']  # Путь к статическим 
 # Default primary key field type
 # https://docs.djangoproject.com/en/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'users.authentication.EmailAuthBackend',
+]
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_HOST_USER =os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD= os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
+
+AUTH_USER_MODEL = 'users.User'

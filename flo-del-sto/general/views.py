@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
 from .models import Flower
 
 
@@ -17,6 +18,9 @@ def index(request):
 def flower(request, flower_id=None):
     if flower_id is None:
         flowers = Flower.objects.all()
+        paginator = Paginator(flowers, 10)  # Показывать 10 на странице
+        page_number = request.GET.get('page')
+        flowers = paginator.get_page(page_number)
         return render(request, 'general/flowers.html', {'flowers': flowers})
     if flower_id > 2:
         return redirect('/')
