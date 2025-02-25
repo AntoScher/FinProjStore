@@ -4,6 +4,14 @@ from django.dispatch import receiver
 from django.conf import settings
 import requests
 from general.models import Flower  # Импортируем модель Flower
+import os
+from dotenv import load_dotenv
+
+# Загрузка переменных из файла .env
+load_dotenv()
+
+# Получение значения TELEGRAM_ID из переменных окружения
+telegram_id = os.getenv('TELEGRAM_ID')
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -39,7 +47,7 @@ def notify_bot_about_status_change(sender, instance, **kwargs):
     if instance._status_before_update != instance.status:
         data = {
             #'telegram_id':6712048539
-            'telegram_id': 1507961620,  # ID пользователя из Telegram
+            'telegram_id': int(os.getenv('TELEGRAM_ID')),  # ID пользователя из Telegram
             'order_id': instance.id,
             'new_status': instance.status,
             'total_price': float(instance.total_price),
