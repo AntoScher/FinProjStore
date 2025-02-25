@@ -36,17 +36,13 @@ def flower_slug(request,flower_slug):
 def page_not_found(request, exception):
     return HttpResponseNotFound("<h1>Страница не найдена</h1>")
 
-"""
-def flower_slug(request, flower_slug):
-# Регулярное выражение для проверки slug (поддерживает кириллицу)
-   valid_slug_pattern = r'^[a-zA-Z0-9_-]+$'
-   if  re.match(valid_slug_pattern, flower_slug):
-        #flower = get_object_or_404(Flower, slug=flower_slug)# Получаем объект Flower по slug - не работает
-        return render(request, 'general/flower_detail.html', {'flower': flower})
-   print(f"Invalid slug: {flower_slug}")  # Отладочный вывод
-   return redirect('/')# Если slug не соответствует регулярному выражению, перенаправляем на главную, но это не работает
-"""
 
+def about(request):
+    # Добавляем переменную caption1 в контекст
+    context = {
+        'caption1': 'Цветочного магазина'  # Значение переменной
+    }
+    return render(request, 'general/about.html', context)
 
 
 

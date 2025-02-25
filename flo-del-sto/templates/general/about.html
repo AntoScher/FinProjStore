@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя страница разработчика</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background: url('pink-fon.webp') no-repeat  center fixed; /* Фоновое изображение */
+            background-size: cover;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Полупрозрачная подложка */
+            border-bottom: 1px solid #ccc;
+        }
+        header img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+        section {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            background-color: rgba(255, 255, 255, 0.8); /* Полупрозрачная подложка */
+        }
+        h2 {
+            margin-top: 0;
+        }
+        .project img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка с личным фото -->
+    <header>
+        <h1>Привет! Меня зовут Антон</h1>
+        <img src="It's me.jpg" alt="It's my avatar">
+    </header>
+
+    <!-- Раздел приветствия -->
+    <section id="greeting">
+                <p>Сайт {{caption1}} мой первый самостоятельный проект.</p>
+    </section>
+
+    <!-- Раздел о себе -->
+    <section id="about-me">
+        <h2>Обо мне</h2>
+        <p>Я перспективный и подающий надежды junior WEB&Mobile разработчик.
+        <p>Опыт во frontend и backend разработке около года.</p>
+        <p style="text-indent: 120px;"> Моя цель – создавать удобные, производительные и красивые приложения.</p>
+    </section>
+
+    <!-- Раздел навыков -->
+    <section id="skills">
+        <h2>Мои навыки</h2>
+        <ul>
+            <li><strong>Frontend:</strong>Figma, HTML, Glide</li>
+            <li><strong>Backend:</strong>  Python, Flask, Django, SQL</li>
+            <li><strong>Инструменты:</strong> Git, Docker</li>
+        </ul>
+    </section>
+
+    <!-- Раздел портфолио
+    <section id="portfolio">
+        <h2>Портфолио</h2>
+
+        Первый проект
+        <div class="project">
+            <h3>Manager of Tasks </h3>
+            <img src="task_manager_-3.png" alt="Проект 1">
+            <p>Описание проекта: Веб-приложение для управления задачами. Моя роль: разработка архитектуры frontend и настройка серверной части.</p>
+            <a href="https://github.com/AntoScher/ZerPython/blob/main/TaskMenager_tk_plus%20nored.py">Посмотреть проект</a>
+        </div>
+    </section>
+    -->
+
+    <!-- Раздел контактов -->
+    <section id="contact">
+        <h2>Контакты</h2>
+        <p>Ты можешь связаться со мной через:</p>
+        <ul>
+            <li>Email: <a href="mailto:asc8er@ya.ru">asc8er@ya.ru</a></li>
+            <li>Telegram: <a href="https://t.me/@anton1016">@anton1016</a></li>
+            <li>GitHub: <a href="https://github.com/AntoScher">https://github.com/AntoScher</a></li>
+        </ul>
+    </section>
+</body>
+</html>
