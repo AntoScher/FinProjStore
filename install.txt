@@ -1,0 +1,126 @@
+#это команда для установки пакетов ПИТОН на этом компе :
+Ошибка возникает из-за проблем с проверкой SSL-сертификата. Вот несколько способов решения:
+
+### 1. **Обновите pip и setuptools**
+Иногда проблема решается обновлением инструментов:
+```bash
+py -m pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --upgrade pip setuptools
+```
+
+### 2. **Используйте `--trusted-host` для установки Django**
+Временно отключите проверку SSL (только если уверены в безопасности сети):
+```bash
+py -m pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org Django
+```
+
+### 3. **Обновите корневые сертификаты**
+На Windows можно вручную обновить сертификаты:
+1. Скачайте корневой сертификат [вручную отсюда](https://curl.se/docs/caextract.html) (файл `cacert.pem`).
+2. Укажите путь к нему в pip:
+```bash
+py -m pip install --cert C:\path\to\cacert.pem Django
+```  Р ато компе путь к файлу: " C:\cacert.pem  "
+
+### 4. **Проверьте системные сертификаты**
+Убедитесь, что в системе установлены актуальные сертификаты:
+- Откройте **Панель управления** → **Свойства браузера** → вкладка **Содержание** → **Сертификаты**.
+- Импортируйте доверенные корневые сертификаты при необходимости.
+
+### 5. **Отключите антивирус/фаервол (временно)**
+Некоторые программы (например, антивирусы) могут перехватывать SSL-трафик. Попробуйте их отключить.
+
+### 6. **Используйте HTTP вместо HTTPS (не рекомендуется)**
+В крайнем случае:
+```bash
+py -m pip install --index-url http://pypi.org/simple/ --trusted-host pypi.org Django
+```
+
+### Дополнительные советы
+- Убедитесь, что дата и время на компьютере установлены корректно.
+- Если вы в корпоративной сети, обратитесь к системному администратору — возможно, требуется добавить корпоративный сертификат в доверенные.
+
+Если ни один метод не помог, предоставьте больше данных о вашей сети и настройках Python.
+
+
+Для установки любых других пакетов (например, aiogram, jinja2) при проблемах с SSL-сертификатами можно использовать те же методы, что и для Django. Вот примеры:
+
+1. Использование --trusted-host
+Добавьте флаги --trusted-host для каждого пакета:
+
+bash
+Copy
+py -m pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org aiogram jinja2
+2. Установка через файл requirements.txt
+Если у вас есть файл зависимостей, добавьте в него пакеты:
+
+txt
+Copy
+aiogram
+jinja2
+Затем выполните:
+
+bash
+Copy
+py -m pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt
+3. Обновление корневых сертификатов
+Если вы уже скачали cacert.pem, используйте его для всех пакетов:
+
+bash
+Copy
+py -m pip install --cert C:\path\to\cacert.pem aiogram jinja2
+4. Отключение проверки SSL (не рекомендуется)
+Временно отключите проверку через флаг --trusted-host:
+
+bash
+Copy
+py -m pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org aiogram jinja2
+Или через HTTP (только в крайнем случае):
+
+bash
+Copy
+py -m pip install --index-url http://pypi.org/simple/ --trusted-host pypi.org aiogram jinja2
+
+
+5. Глобальное решение для pip
+Чтобы не указывать --trusted-host каждый раз, можно:
+
+Создать/изменить файл pip.ini (расположение зависит от ОС, на Windows обычно %APPDATA%\pip\pip.ini).
+
+Добавить в него:
+
+ini
+Copy
+[global]
+trusted-host = pypi.org files.pythonhosted.org
+
+Если вы хотите указать альтернативный индекс (например, HTTP вместо HTTPS), добавьте:
+ini
+Copy
+[global]
+index-url = http://pypi.org/simple
+trusted-host = pypi.org files.pythonhosted.org
+
+Важно:
+Названия пакетов:
+
+Для Jinja2 используйте jinja2 (не jinja).
+
+Для aiogram — aiogram (версии 2.x и 3.x могут отличаться).
+
+Безопасность:
+
+Отключайте проверку SSL только если уверены в безопасности сети.
+
+В корпоративных сетях часто требуется установка внутренних сертификатов. Обратитесь к администратору.
+
+Обновление pip:
+Если проблема сохраняется, обновите pip:
+
+bash
+Copy
+py -m pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --upgrade pip
+Если ни один метод не работает, проверьте:
+
+Нет ли блокировки трафика антивирусом/фаерволом.
+
+Корректность системного времени (ошибки времени могут ломать SSL).
