@@ -1,11 +1,9 @@
-from django.test import TestCase
-from django.urls import resolve, reverse
+from django.test import TestCase, RequestFactory, Client
+from users.models import User
 from box import views
-from users.models import User  # Используем кастомную модель пользователя
 from general.models import Flower
 from box.models import Order
 from unittest.mock import patch
-from django.test import RequestFactory
 
 
 class BoxURLTests(TestCase):
@@ -32,8 +30,8 @@ class BoxURLTests(TestCase):
 
 class CartViewTests(TestCase):
     def setUp(self):
-        self.factory = RequestFactory()
-        self.user = User.objects.create_user(username='testuser', password='12345')  # Используем кастомную модель
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='12345')
         self.flower = Flower.objects.create(
             title="Rose",
             description="Beautiful red rose",
@@ -42,29 +40,28 @@ class CartViewTests(TestCase):
         )
 
     def test_cart_view_with_empty_cart(self):
-        request = self.factory.get('/cart/')
-        request.user = self.user
-        request.session = {}
-        response = views.cart(request)
+        self.client.force_login(self.user)
+        response = self.client.get('/cart/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn('cart_items', response.context_data)
-        self.assertEqual(len(response.context_data['cart_items']), 0)
+        self.assertIn('cart_items', response.context)
+        self.assertEqual(len(response.context['cart_items']), 0)
 
     def test_cart_view_with_items_in_cart(self):
-        request = self.factory.get('/cart/')
-        request.user = self.user
-        request.session = {'cart': [self.flower.id]}
-        response = views.cart(request)
+        self.client.force_login(self.user)
+        session = self.client.session
+        session['cart'] = [self.flower.id]
+        session.save()
+        response = self.client.get('/cart/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn('cart_items', response.context_data)
-        self.assertEqual(len(response.context_data['cart_items']), 1)
-        self.assertEqual(response.context_data['cart_items'][0], self.flower)
+        self.assertIn('cart_items', response.context)
+        self.assertEqual(len(response.context['cart_items']), 1)
+        self.assertEqual(response.context['cart_items'][0], self.flower)
 
 
 class AddRemoveCartTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-        self.user = User.objects.create_user(username='testuser', password='12345')  # Используем кастомную модель
+        self.user = User.objects.create_user(username='testuser', password='12345')
         self.flower = Flower.objects.create(
             title="Rose",
             description="Beautiful red rose",
@@ -77,7 +74,7 @@ class AddRemoveCartTests(TestCase):
         request.user = self.user
         request.session = {}
         response = views.add_to_cart(request, self.flower.id)
-        self.assertEqual(response.status_code, 302)  # Проверяем редирект
+        self.assertEqual(response.status_code, 302)
         self.assertIn(self.flower.id, request.session['cart'])
 
     def test_remove_from_cart(self):
@@ -85,14 +82,14 @@ class AddRemoveCartTests(TestCase):
         request.user = self.user
         request.session = {'cart': [self.flower.id]}
         response = views.remove_from_cart(request, self.flower.id)
-        self.assertEqual(response.status_code, 302)  # Проверяем редирект
+        self.assertEqual(response.status_code, 302)
         self.assertNotIn(self.flower.id, request.session['cart'])
 
 
 class CheckoutViewTests(TestCase):
     def setUp(self):
-        self.factory = RequestFactory()
-        self.user = User.objects.create_user(username='testuser', password='12345')  # Используем кастомную модель
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='12345')
         self.flower = Flower.objects.create(
             title="Rose",
             description="Beautiful red rose",
@@ -101,38 +98,39 @@ class CheckoutViewTests(TestCase):
         )
 
     def test_checkout_view_get(self):
-        request = self.factory.get('/checkout/')
-        request.user = self.user
-        request.session = {'cart': [self.flower.id]}
-        response = views.checkout(request)
+        self.client.force_login(self.user)
+        session = self.client.session
+        session['cart'] = [self.flower.id]
+        session.save()
+        response = self.client.get('/checkout/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn('total_price', response.context_data)
-        self.assertEqual(response.context_data['total_price'], self.flower.price)
+        self.assertIn('total_price', response.context)
+        self.assertEqual(response.context['total_price'], self.flower.price)
 
     def test_checkout_view_post(self):
-        request = self.factory.post('/checkout/')
-        request.user = self.user
-        request.session = {'cart': [self.flower.id]}
-        response = views.checkout(request)
-        self.assertEqual(response.status_code, 302)  # Проверяем редирект
-        self.assertEqual(len(request.session['cart']), 0)  # Корзина должна быть очищена
+        self.client.force_login(self.user)
+        session = self.client.session
+        session['cart'] = [self.flower.id]
+        session.save()
+        response = self.client.post('/checkout/')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(self.client.session['cart']), 0)
 
 
 class PaymentConfirmationViewTests(TestCase):
     def setUp(self):
-        self.factory = RequestFactory()
-        self.user = User.objects.create_user(username='testuser', password='12345')  # Используем кастомную модель
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='12345')
 
     def test_payment_confirmation_view(self):
-        request = self.factory.get('/payment-confirmation/')
-        request.user = self.user
-        response = views.payment_confirmation(request)
+        self.client.force_login(self.user)
+        response = self.client.get('/payment-confirmation/')
         self.assertEqual(response.status_code, 200)
 
 
 class OrderModelTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='12345')  # Используем кастомную модель
+        self.user = User.objects.create_user(username='testuser', password='12345')
         self.flower = Flower.objects.create(
             title="Rose",
             description="Beautiful red rose",
@@ -161,7 +159,7 @@ class OrderModelTests(TestCase):
 
 class OrderSignalTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='12345')  # Используем кастомную модель
+        self.user = User.objects.create_user(username='testuser', password='12345')
         self.flower = Flower.objects.create(
             title="Rose",
             description="Beautiful red rose",
@@ -178,4 +176,4 @@ class OrderSignalTests(TestCase):
     def test_notify_bot_about_status_change(self, mock_post):
         self.order.status = 'paid'
         self.order.save()
-        mock_post.assert_called_once()  # Проверяем, что POST-запрос был отправлен
+        mock_post.assert_called_once()
