@@ -6,6 +6,7 @@ from general.models import Flower
 from box.models import Order
 from unittest.mock import patch
 from django.contrib.sessions.middleware import SessionMiddleware
+from decimal import Decimal
 
 
 class BoxURLTests(TestCase):
@@ -37,13 +38,13 @@ class CartViewTests(TestCase):
         self.flower = Flower.objects.create(
             title="Rose",
             description="Beautiful red rose",
-            price=10.99,
+            price=Decimal('10.99'),  # Используем Decimal
             slug="rose"
         )
 
     def test_cart_view_with_empty_cart(self):
         self.client.force_login(self.user)
-        response = self.client.get('/cart/')
+        response = self.client.get(reverse('cart'))  # Используем reverse
         self.assertEqual(response.status_code, 200)
         self.assertIn('cart_items', response.context)
         self.assertEqual(len(response.context['cart_items']), 0)
@@ -53,7 +54,7 @@ class CartViewTests(TestCase):
         session = self.client.session
         session['cart'] = [self.flower.id]
         session.save()
-        response = self.client.get('/cart/')
+        response = self.client.get(reverse('cart'))  # Используем reverse
         self.assertEqual(response.status_code, 200)
         self.assertIn('cart_items', response.context)
         self.assertEqual(len(response.context['cart_items']), 1)
@@ -67,7 +68,7 @@ class AddRemoveCartTests(TestCase):
         self.flower = Flower.objects.create(
             title="Rose",
             description="Beautiful red rose",
-            price=10.99,
+            price=Decimal('10.99'),  # Используем Decimal
             slug="rose"
         )
 
@@ -101,7 +102,7 @@ class CheckoutViewTests(TestCase):
         self.flower = Flower.objects.create(
             title="Rose",
             description="Beautiful red rose",
-            price=10.99,
+            price=Decimal('10.99'),  # Используем Decimal
             slug="rose"
         )
 
@@ -110,17 +111,17 @@ class CheckoutViewTests(TestCase):
         session = self.client.session
         session['cart'] = [self.flower.id]
         session.save()
-        response = self.client.get('/checkout/')
+        response = self.client.get(reverse('checkout'))  # Используем reverse
         self.assertEqual(response.status_code, 200)
         self.assertIn('total_price', response.context)
-        self.assertEqual(response.context['total_price'], self.flower.price)
+        self.assertEqual(response.context['total_price'], Decimal('10.99'))  # Используем Decimal
 
     def test_checkout_view_post(self):
         self.client.force_login(self.user)
         session = self.client.session
         session['cart'] = [self.flower.id]
         session.save()
-        response = self.client.post('/checkout/')
+        response = self.client.post(reverse('checkout'))  # Используем reverse
         self.assertEqual(response.status_code, 302)
         self.assertEqual(len(self.client.session['cart']), 0)
 
@@ -132,7 +133,7 @@ class PaymentConfirmationViewTests(TestCase):
 
     def test_payment_confirmation_view(self):
         self.client.force_login(self.user)
-        response = self.client.get('/payment-confirmation/')
+        response = self.client.get(reverse('payment_confirmation'))  # Используем reverse
         self.assertEqual(response.status_code, 200)
 
 
@@ -142,25 +143,25 @@ class OrderModelTests(TestCase):
         self.flower = Flower.objects.create(
             title="Rose",
             description="Beautiful red rose",
-            price=10.99,
+            price=Decimal('10.99'),  # Используем Decimal
             slug="rose"
         )
 
     def test_order_creation(self):
         order = Order.objects.create(
             user=self.user,
-            total_price=10.99
+            total_price=Decimal('10.99')  # Используем Decimal
         )
         order.flowers.add(self.flower)
         self.assertEqual(order.user, self.user)
         self.assertEqual(order.flowers.count(), 1)
-        self.assertEqual(order.total_price, 10.99)
+        self.assertEqual(order.total_price, Decimal('10.99'))  # Используем Decimal
         self.assertEqual(order.status, 'pending')
 
     def test_order_str_method(self):
         order = Order.objects.create(
             user=self.user,
-            total_price=10.99
+            total_price=Decimal('10.99')  # Используем Decimal
         )
         self.assertEqual(str(order), f"Order {order.id} - {self.user.username}")
 
@@ -171,12 +172,12 @@ class OrderSignalTests(TestCase):
         self.flower = Flower.objects.create(
             title="Rose",
             description="Beautiful red rose",
-            price=10.99,
+            price=Decimal('10.99'),  # Используем Decimal
             slug="rose"
         )
         self.order = Order.objects.create(
             user=self.user,
-            total_price=10.99
+            total_price=Decimal('10.99')  # Используем Decimal
         )
         self.order.flowers.add(self.flower)
 
@@ -184,4 +185,4 @@ class OrderSignalTests(TestCase):
     def test_notify_bot_about_status_change(self, mock_post):
         self.order.status = 'paid'
         self.order.save()
-        mock_post.assert_called_once()
+        mock_post.assert_called_once()  # Проверяем, что POST-запрос был отправлен
