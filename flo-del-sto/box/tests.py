@@ -1,9 +1,11 @@
 from django.test import TestCase, RequestFactory, Client
+from django.urls import resolve, reverse
 from users.models import User
 from box import views
 from general.models import Flower
 from box.models import Order
 from unittest.mock import patch
+from django.contrib.sessions.middleware import SessionMiddleware
 
 
 class BoxURLTests(TestCase):
@@ -69,10 +71,15 @@ class AddRemoveCartTests(TestCase):
             slug="rose"
         )
 
+    def add_session_to_request(self, request):
+        middleware = SessionMiddleware(lambda req: None)
+        middleware.process_request(request)
+        request.session.save()
+
     def test_add_to_cart(self):
         request = self.factory.get(f'/cart/add/{self.flower.id}/')
         request.user = self.user
-        request.session = {}
+        self.add_session_to_request(request)
         response = views.add_to_cart(request, self.flower.id)
         self.assertEqual(response.status_code, 302)
         self.assertIn(self.flower.id, request.session['cart'])
@@ -80,7 +87,8 @@ class AddRemoveCartTests(TestCase):
     def test_remove_from_cart(self):
         request = self.factory.get(f'/cart/remove/{self.flower.id}/')
         request.user = self.user
-        request.session = {'cart': [self.flower.id]}
+        self.add_session_to_request(request)
+        request.session['cart'] = [self.flower.id]
         response = views.remove_from_cart(request, self.flower.id)
         self.assertEqual(response.status_code, 302)
         self.assertNotIn(self.flower.id, request.session['cart'])
